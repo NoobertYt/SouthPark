@@ -3,66 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Южный Парк - Смотреть Онлайн</title>
+    <title>Лор Персонажей Южного Парка</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background: url('https://upload.wikimedia.org/wikipedia/en/7/77/South_Park_characters.png') center/cover no-repeat;
-            color: white;
-            font-family: 'Arial', sans-serif;
+        .character-card {
+            transition: transform 0.3s ease;
         }
-        .fade-in {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeIn 0.5s forwards;
+        .character-card:hover {
+            transform: scale(1.05);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .episode:hover { background-color: rgba(255, 255, 255, 0.2); }
     </style>
 </head>
-<body class="flex flex-col items-center p-4 h-screen">
-    <h1 class="text-5xl font-bold mb-6 fade-in bg-black bg-opacity-50 p-4 rounded-lg">Южный Парк - Все серии</h1>
-    <div class="flex w-full h-full gap-4 p-4">
-        <div class="w-1/4 overflow-auto h-full bg-black bg-opacity-70 p-4 rounded-lg fade-in">
-            <h2 class="text-2xl font-bold mb-4">Сезоны</h2>
-            <ul id="season-list" class="space-y-2"></ul>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4">
+        <h1 class="text-4xl font-bold text-center mb-8">Персонажи Южного Парка</h1>
+
+        <!-- Галерея персонажей -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- Пример карточки персонажа -->
+            <div class="character-card cursor-pointer" onclick="showBio('cartman')">
+                <img src="images/cartman.jpg" alt="Карл" class="w-full h-auto rounded-lg shadow-lg">
+                <h3 class="mt-2 text-center text-xl font-semibold">Эрик Картман</h3>
+            </div>
+
+            <div class="character-card cursor-pointer" onclick="showBio('stan')">
+                <img src="images/stan.jpg" alt="Стэн" class="w-full h-auto rounded-lg shadow-lg">
+                <h3 class="mt-2 text-center text-xl font-semibold">Стэн Марш</h3>
+            </div>
+
+            <div class="character-card cursor-pointer" onclick="showBio('kyle')">
+                <img src="images/kyle.jpg" alt="Кайл" class="w-full h-auto rounded-lg shadow-lg">
+                <h3 class="mt-2 text-center text-xl font-semibold">Кайл Брофловски</h3>
+            </div>
+
+            <div class="character-card cursor-pointer" onclick="showBio('kenny')">
+                <img src="images/kenny.jpg" alt="Кенни" class="w-full h-auto rounded-lg shadow-lg">
+                <h3 class="mt-2 text-center text-xl font-semibold">Кенни Маккормик</h3>
+            </div>
         </div>
-        <div class="w-3/4 flex flex-col items-center">
-            <iframe id="video-frame" class="w-full h-[80vh] bg-black rounded-lg fade-in" frameborder="0" allowfullscreen></iframe>
+
+        <!-- Модальное окно с биографией персонажа -->
+        <div id="bioModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+                <h2 id="bioTitle" class="text-2xl font-bold mb-4">Биография</h2>
+                <p id="bioContent" class="text-gray-700 text-lg">Загрузка...</p>
+                <button onclick="closeModal()" class="mt-4 py-2 px-4 bg-red-500 text-white rounded-lg">Закрыть</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const seasons = 26;
-        const episodesPerSeason = 10;
-        const seasonList = document.getElementById("season-list");
-        const videoFrame = document.getElementById("video-frame");
-
-        for (let season = 1; season <= seasons; season++) {
-            let seasonItem = document.createElement("li");
-            seasonItem.classList = "cursor-pointer p-2 border-b border-gray-600 bg-gray-700 rounded-lg transition hover:bg-yellow-500 hover:text-black";
-            seasonItem.innerText = `Сезон ${season}`;
-            seasonItem.onclick = () => loadEpisodes(season);
-            seasonList.appendChild(seasonItem);
-        }
-
-        function loadEpisodes(season) {
-            seasonList.innerHTML = "<h2 class='text-xl font-bold mb-2'>Выберите серию</h2>";
-            for (let episode = 1; episode <= episodesPerSeason; episode++) {
-                let episodeItem = document.createElement("li");
-                episodeItem.classList = "cursor-pointer episode p-2 rounded-lg bg-gray-600 transition hover:bg-red-500 hover:text-white";
-                episodeItem.innerText = `Серия ${episode}`;
-                episodeItem.onclick = () => loadVideo(season, episode);
-                seasonList.appendChild(episodeItem);
+        // Данные персонажей
+        const bios = {
+            cartman: {
+                name: "Эрик Картман",
+                bio: "Эрик Теодор Картман — один из главных персонажей, известный своим неприличным поведением, ожесточённым характером и преувеличенным эгоизмом."
+            },
+            stan: {
+                name: "Стэн Марш",
+                bio: "Стэн — один из четырёх главных персонажей, часто выступает как голос разума и противопоставляется своим друзьям."
+            },
+            kyle: {
+                name: "Кайл Брофловски",
+                bio: "Кайл — еврей, на которого часто ставят ярлыки из-за его религиозной принадлежности и яркой индивидуальности."
+            },
+            kenny: {
+                name: "Кенни Маккормик",
+                bio: "Кенни известен тем, что часто умирает в эпизодах, но затем возвращается в следующей серии без объяснений."
             }
+        };
+
+        // Функция для отображения биографии
+        function showBio(character) {
+            const bio = bios[character];
+            document.getElementById('bioTitle').textContent = bio.name;
+            document.getElementById('bioContent').textContent = bio.bio;
+            document.getElementById('bioModal').classList.remove('hidden');
         }
 
-        function loadVideo(season, episode) {
-            videoFrame.src = `https://www.southparkstudios.com/seasons/${season}/episodes/${episode}`;
+        // Функция для закрытия модального окна
+        function closeModal() {
+            document.getElementById('bioModal').classList.add('hidden');
         }
     </script>
+
 </body>
 </html>
