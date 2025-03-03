@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Южный Парк - Смотреть Онлайн</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: url('https://upload.wikimedia.org/wikipedia/en/7/77/South_Park_characters.png') center/cover no-repeat;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .episode:hover { background-color: rgba(255, 255, 255, 0.2); }
+    </style>
+</head>
+<body class="flex flex-col items-center p-4 h-screen">
+    <h1 class="text-5xl font-bold mb-6 fade-in bg-black bg-opacity-50 p-4 rounded-lg">Южный Парк - Все серии</h1>
+    <div class="flex w-full h-full gap-4 p-4">
+        <div class="w-1/4 overflow-auto h-full bg-black bg-opacity-70 p-4 rounded-lg fade-in">
+            <h2 class="text-2xl font-bold mb-4">Сезоны</h2>
+            <ul id="season-list" class="space-y-2"></ul>
+        </div>
+        <div class="w-3/4 flex flex-col items-center">
+            <iframe id="video-frame" class="w-full h-[80vh] bg-black rounded-lg fade-in" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        const seasons = 26;
+        const episodesPerSeason = 10;
+        const seasonList = document.getElementById("season-list");
+        const videoFrame = document.getElementById("video-frame");
+
+        for (let season = 1; season <= seasons; season++) {
+            let seasonItem = document.createElement("li");
+            seasonItem.classList = "cursor-pointer p-2 border-b border-gray-600 bg-gray-700 rounded-lg transition hover:bg-yellow-500 hover:text-black";
+            seasonItem.innerText = `Сезон ${season}`;
+            seasonItem.onclick = () => loadEpisodes(season);
+            seasonList.appendChild(seasonItem);
+        }
+
+        function loadEpisodes(season) {
+            seasonList.innerHTML = "<h2 class='text-xl font-bold mb-2'>Выберите серию</h2>";
+            for (let episode = 1; episode <= episodesPerSeason; episode++) {
+                let episodeItem = document.createElement("li");
+                episodeItem.classList = "cursor-pointer episode p-2 rounded-lg bg-gray-600 transition hover:bg-red-500 hover:text-white";
+                episodeItem.innerText = `Серия ${episode}`;
+                episodeItem.onclick = () => loadVideo(season, episode);
+                seasonList.appendChild(episodeItem);
+            }
+        }
+
+        function loadVideo(season, episode) {
+            videoFrame.src = `https://www.southparkstudios.com/seasons/${season}/episodes/${episode}`;
+        }
+    </script>
+</body>
+</html>
